@@ -101,8 +101,6 @@ const renderCalendar = () => {
       days: monthDays,
     })
   }
-
-  setSlider()
 }
 
 const renderMonth = ({ month, year, days }) => {
@@ -461,6 +459,7 @@ const submitCalendar = () => {
 
 const initCalendar = () => {
   renderCalendar()
+  setSlider()
   setTypeSelector()
 }
 
