@@ -220,7 +220,6 @@ const setSlider = () => {
     if (currentTranslateX < 0) {
       currentTranslateX = 0;
     }
-    console.log(currentTranslateX)
     monthsContainer.scroll({
       top: 0,
       left: currentTranslateX,
@@ -235,7 +234,6 @@ const setSlider = () => {
     if (currentTranslateX > maxTranslateX) {
       currentTranslateX = maxTranslateX;
     }
-    console.log(currentTranslateX)
     monthsContainer.scroll({
       top: 0,
       left: currentTranslateX,
