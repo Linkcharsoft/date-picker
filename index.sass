@@ -1,0 +1,397 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap')
+
+$text: #e8eaed
+$text-inverted: #202124
+$text-disabled:#e8eaed61
+$detail: #9aa0a6
+$background: #35373a
+$background-hover: #3d3e41
+$background-alt: #202124
+$primary: #8ab4f8
+$primary-shadow: #394457
+
+*, *::before, *::after
+  box-sizing: border-box
+  outline: none
+
+body
+  margin: 0
+  padding: 20px
+  background: $background-alt
+  font-family: 'Roboto', sans-serif
+
+button
+  background: unset
+  margin: unset
+  border: unset
+  padding: unset
+  color: $text
+  cursor: pointer
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease
+
+.Selector
+  width: fit-content
+  max-width: 100%
+  height: 55px
+  border: 1px solid $detail
+  border-radius: 4px
+  padding: 0 12px
+  background: $background
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 8px
+  color: $text
+  position: relative
+  &__Icon
+    fill: $detail
+    flex-shrink: 0
+  &__Divisor
+    width: 1px
+    height: calc(100% - 24px)
+    background: $detail
+  &__Item
+    width: fit-content
+    height: 100%
+    display: flex
+    justify-content: space-between
+    align-items: center
+    gap: 10px
+    &-Data
+      width: 130px
+      padding-left: 8px
+      font-size: 16px
+      text-align: left
+      &:hover
+        color: $detail
+    &-Buttons
+      height: 100%
+      display: flex
+      align-items: center
+    &-Button
+      width: fit-content
+      height: 100%
+      padding: 0 4px
+      display: flex
+      justify-content: center
+      align-items: center
+      color: $text
+      &:hover
+        background: $background-hover
+      .Selector__Item-Icon
+        fill: currentColor
+    &-Button--Disabled
+      @extend .Selector__Item-Button
+      color: $text-disabled
+
+.Calendar
+  width: 100%
+  max-width: 768px
+  border-radius: 4px
+  background: $background
+  &__Header
+    border-bottom: 1px solid $detail
+    padding: 16px
+    display: flex
+    justify-content: space-between
+    align-items: center
+  &__Selector-Container
+    position: relative
+  &__Selector
+    width: fit-content
+    min-width: 120px
+    max-width: 100%
+    height: 46px
+    border-radius: 4px
+    padding: 0 12px
+    background: $background
+    display: flex
+    justify-content: space-between
+    align-items: center
+    gap: 4px
+    color: $text
+    &:hover
+      background: $background-hover
+    &-Icon
+      fill: $detail
+      flex-shrink: 0
+    &-Options
+      width: max-content
+      height: fit-content
+      border-radius: 4px
+      padding: 8px 0
+      background: $background
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 30%), 0 2px 6px 2px rgb(0 0 0 / 15%)
+      display: none
+      overflow: hidden
+      position: absolute
+      top: 100%
+      left: 0
+      z-index: 10
+      &-Active
+        @extend .Calendar__Selector-Options
+        display: block
+    &-Option
+      width: 100%
+      height: 46px
+      padding: 0 24px 0 56px
+      display: flex
+      justify-content: flex-start
+      align-items: center
+      position: relative
+      color: $text
+      &:hover
+        background: $background-hover
+      &-Icon
+        position: absolute
+        left: 16px
+        fill: $text
+  &__Buttons
+    display: flex
+    align-items: center
+    gap: 8px
+  &__Restart-Button
+    height: 46px
+    border-radius: 4px
+    padding: 0 24px
+    display: flex
+    justify-content: center
+    align-items: center
+    color: $text
+    font-weight: 500
+    &:hover
+      background: $background-hover
+  &__Months-Container
+    height: 400px
+    position: relative
+  &__Month-Button
+    width: 34px
+    height: 34px
+    border-radius: 50%
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 30%), 0 4px 8px 3px rgb(0 0 0 / 15%)
+    display: flex
+    justify-content: center
+    align-items: center
+    color: $text
+    position: absolute
+    top: calc(50% - 17px)
+    background: $background
+    z-index: 5
+    &:hover
+      background: $background-hover
+    &-Icon
+      fill: $text
+    &--Prev
+      @extend .Calendar__Month-Button
+      left: -16px
+    &--Next
+      @extend .Calendar__Month-Button
+      right: -16px
+  &__Footer
+    border-top: 1px solid $detail
+    padding: 16px
+    display: flex
+    justify-content: flex-end
+    align-items: center
+  &__Save-Button
+    width: fit-content
+    height: 32px
+    border-radius: 16px
+    padding: 0 24px
+    background: $primary
+    color: $text-inverted
+    font-weight: 500
+
+.Months__Container
+  width: 100%
+  height: 100%
+  padding: 16px 0
+  display: flex
+  overflow: hidden
+
+.Month
+  width: 50%
+  height: 100%
+  padding: 0 12px
+  display: flex
+  flex-direction: column
+  gap: 8px
+  flex-grow: 0
+  flex-shrink: 0
+  text-align: center
+  color: $text
+  font-size: 14px
+  &__Header
+    width: 100%
+    display: flex
+    flex-direction: column
+    text-align: center
+    gap: 20px
+    color: $text
+  &__Name
+    margin: 0
+    font-size: 18px
+    font-weight: 500
+    text-transform: lowercase
+  &__Weekdays
+    width: 100%
+    height: 20px
+    display: flex
+    justify-content: space-evenly
+  &__Weekday
+    width: calc(100% / 7)
+    max-width: 40px
+    height: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    font-weight: 500
+  &__Days
+    width: 100%
+    display: flex
+    justify-content: space-evenly
+    flex-wrap: wrap
+  &__Day
+    width: calc(100% / 7)
+    max-width: 52px
+    height: 52px
+    display: flex
+    justify-content: center
+    align-items: center
+    cursor: pointer
+    position: relative
+    &::after
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      width: 52px
+      height: 100%
+      border: 1px solid $primary
+      border-radius: 50px
+      display: flex
+      justify-content: center
+      align-items: center
+      z-index: 2
+      opacity: 0
+    &:hover
+      &::after
+        opacity: 1
+    &--Blank
+      @extend .Month__Day
+      content: ''
+      cursor: default
+      &::after
+        content: none
+    &--Disabled
+      @extend .Month__Day
+      color: $text-disabled
+      cursor: default
+      &::after
+        content: none
+    &--Departure
+      @extend .Month__Day
+      color: $text-inverted
+      &::after
+        content: attr(data-number)
+        background: $primary
+        opacity: 1
+      &::before
+        content: attr(data-range)
+        width: 50%
+        height: 100%
+        border: unset
+        border-radius: unset
+        background: $primary-shadow
+        display: flex
+        justify-content: center
+        align-items: center
+        position: absolute
+        top: 0
+        left: 50%
+        opacity: 1
+        z-index: 1
+      &-NoRange
+        @extend .Month__Day--Departure
+        &::before
+          content: none !important
+    &--Return
+      @extend .Month__Day
+      &::after
+        content: attr(data-number)
+        border: 1px solid $detail
+        background: $background
+        opacity: 1
+      &::before
+        content: ''
+        width: 50%
+        height: 100%
+        border: unset
+        border-radius: unset
+        background: $primary-shadow
+        display: flex
+        justify-content: center
+        align-items: center
+        position: absolute
+        top: 0
+        right: 50%
+        opacity: 1
+        z-index: 1
+    &--Range
+      @extend .Month__Day
+      &::before
+        content: attr(data-number)
+        width: 100%
+        height: 100%
+        border: unset
+        border-radius: unset
+        background: $primary-shadow
+        display: flex
+        justify-content: center
+        align-items: center
+        position: absolute
+        top: 0
+        left: 0
+        opacity: 1
+        z-index: 1
+      &::after
+        content: unset
+
+
+.calendar-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 10px
+  background-color: #eee
+
+.weekdays
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 10px
+  background-color: #f0f0f0
+  div
+    width: calc(100% / 7)
+    text-align: center
+
+.week
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 10px
+  border-top: 1px solid #ccc
+  div
+    width: calc(100% / 7)
+    text-align: center
+    &.day
+      height: 50px
+      display: flex
+      justify-content: center
+      align-items: center
+      &:hover
+        background-color: #f0f0f0
+      &.today
+        background-color: #f0f0f0
+      &.selected
+        background-color: #ccc

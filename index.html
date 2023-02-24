@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="Selector">
+    <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="Selector__Icon"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"></path><path d="M8 11c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4 0c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4 0c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path></svg>
+
+    <div class="Selector__Item">
+      <button class="Selector__Item-Data Selector__Item-Departure">Departure</button>
+      <div class="Selector__Item-Buttons">
+        <button class="Selector__Item-Button Selector__Item-Button--Departure-Prev">
+          <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M16.41 5.41L15 4l-8 8 8 8 1.41-1.41L9.83 12"></path></svg>
+        </button>
+        <button class="Selector__Item-Button Selector__Item-Button--Departure-Next">
+          <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M7.59 18.59L9 20l8-8-8-8-1.41 1.41L14.17 12"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="Selector__Divisor"></div>
+
+    <div class="Selector__Item">
+      <button class="Selector__Item-Data Selector__Item-Return">Return</button>
+      <div class="Selector__Item-Buttons">
+        <button class="Selector__Item-Button Selector__Item-Button--Return-Prev">
+          <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M16.41 5.41L15 4l-8 8 8 8 1.41-1.41L9.83 12"></path></svg>
+        </button>
+        <button class="Selector__Item-Button Selector__Item-Button--Return-Next">
+          <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M7.59 18.59L9 20l8-8-8-8-1.41 1.41L14.17 12"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="Calendar">
+    <header class="Calendar__Header">
+      <div class="Calendar__Selector-Container">
+        <button id="type-selector" class="Calendar__Selector">
+          Round trip
+          <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Calendar__Selector-Icon"><path d="M7 10l5 5 5-5H7z"></path></svg>
+        </button>
+
+        <div id="type-options" class="Calendar__Selector-Options">
+          <button id="type-departure-and-return" class="Calendar__Selector-Option">
+            <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="Calendar__Selector-Option-Icon"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path></svg>
+            Round trip
+          </button>
+          <button id="type-departure-only" class="Calendar__Selector-Option">
+            One way
+          </button>
+        </div>
+      </div>
+
+      <div class="Calendar__Buttons">
+        <button id="restart-button" class="Calendar__Restart-Button">Reset</button>
+
+        <div class="Selector">
+          <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="Selector__Icon"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"></path><path d="M8 11c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4 0c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4 0c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path></svg>
+
+          <div class="Selector__Item">
+            <button id="departure-selector" class="Selector__Item-Data Selector__Item-Departure">Departure</button>
+            <div class="Selector__Item-Buttons">
+              <button class="Selector__Item-Button Selector__Item-Button--Departure-Prev">
+                <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M16.41 5.41L15 4l-8 8 8 8 1.41-1.41L9.83 12"></path></svg>
+              </button>
+              <button class="Selector__Item-Button Selector__Item-Button--Departure-Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M7.59 18.59L9 20l8-8-8-8-1.41 1.41L14.17 12"></path></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="Selector__Divisor"></div>
+
+          <div class="Selector__Item">
+            <button id="return-selector" class="Selector__Item-Data Selector__Item-Return">Return</button>
+            <div class="Selector__Item-Buttons">
+              <button class="Selector__Item-Button Selector__Item-Button--Return-Prev">
+                <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M16.41 5.41L15 4l-8 8 8 8 1.41-1.41L9.83 12"></path></svg>
+              </button>
+              <button class="Selector__Item-Button Selector__Item-Button--Return-Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Selector__Item-Icon"><path d="M7.59 18.59L9 20l8-8-8-8-1.41 1.41L14.17 12"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="month-slider" class="Calendar__Months-Container">
+      <div id="months-container" class="Months__Container">
+      </div>
+
+      <button id="prev-month" class="Calendar__Month-Button--Prev">
+        <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Calendar__Month-Button-Icon"><path d="M16.41 5.41L15 4l-8 8 8 8 1.41-1.41L9.83 12"></path></svg>
+      </button>
+      <button id="next-month" class="Calendar__Month-Button--Next">
+        <svg width="18" height="18" viewBox="0 0 24 24" focusable="false" class="Calendar__Month-Button-Icon"><path d="M7.59 18.59L9 20l8-8-8-8-1.41 1.41L14.17 12"></path></svg>
+      </button>
+    </div>
+
+    <footer class="Calendar__Footer">
+      <button id="submit-button" class="Calendar__Save-Button">Done</button>
+    </footer>
+  </div>
+
+  <script src="index.js"></script>
+<!-- <div id="date-picker-wrapper">
+    <div id="departure-input-wrapper" class="date-input-wrapper">
+      <label for="departure-input">Ida</label>
+      <input id="departure-input" type="text" placeholder="Select date" required>
+    </div>
+    <div id="return-input-wrapper" class="date-input-wrapper">
+      <label for="return-input">Vuelta</label>
+      <input id="return-input" type="text" placeholder="Select date" required>
+    </div>
+    <div id="button-wrapper">
+      <button id="apply-button" type="button">Guardar</button>
+      <button id="clear-button" type="button">Borrar</button>
+    </div>
+    <div id="date-range-wrapper">Seleccionar fechas</div>
+  </div>
+
+  <script>
+    // Inicializar los inputs de fecha con Flatpickr
+    const departureInput = flatpickr("#departure-input", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      onChange: function(selectedDates, dateStr, instance) {
+        // Establecer la fecha mínima para el input de fecha de vuelta como la fecha seleccionada en el input de fecha de ida
+        returnInput.set("minDate", selectedDates[0]);
+      }
+    });
+
+    const returnInput = flatpickr("#return-input", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      onChange: function(selectedDates, dateStr, instance) {
+        // Establecer la fecha máxima para el input de fecha de ida como la fecha seleccionada en el input de fecha de vuelta
+        departureInput.set("maxDate", selectedDates[0]);
+      }
+    });
+
+    // Obtener los elementos del DOM
+    const departureInputWrapper = document.getElementById("departure-input-wrapper");
+    const returnInputWrapper = document.getElementById("return-input-wrapper");
+    const dateRangeWrapper = document.getElementById("date-range-wrapper");
+
+    // Agregar un evento al botón "Apply" para mostrar la selección de fecha en el campo de texto
+    const applyButton = document.getElementById("apply-button");
+    applyButton.addEventListener("click", function() {
+      const departureDate = departureInput.input.value;
+      const returnDate = returnInput.input.value;
+      dateRangeWrapper.textContent = `${departureDate} - ${returnDate}`;
+    });
+
+    // Agregar un evento al botón "Clear" para borrar la selección de fecha
+    const clearButton = document.getElementById("clear-button");
+    clearButton.addEventListener("click", function() {
+      departureInput.clear();
+      returnInput.clear();
+      dateRangeWrapper.textContent = "Select dates";
+    });
+
+    // Agregar eventos para mostrar y ocultar los inputs de fecha
+    departureInputWrapper.addEventListener("click", function() {
+      departureInput.open();
+    });
+
+    returnInputWrapper.addEventListener("click", function() {
+      returnInput.open();
+    });
+
+    document.addEventListener("click", function(event) {
+      if (!departureInput.element.contains(event.target)) {
+        departureInput.close();
+      }
+      if (!returnInput.element.contains(event.target)) {
+        returnInput.close();
+      }
+    });
+  </script> -->
+</body>
+</html>
