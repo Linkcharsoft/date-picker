@@ -1,33 +1,45 @@
 const selector = document.querySelectorAll('.Selector')
 const departureSelector = document.getElementById('departure-selector')
+const departureInsideSelector = document.getElementById('departure-inside-selector')
 const departureItemsDate= document.querySelectorAll('.Selector__Item-Departure')
 const departurePrevButton = document.querySelectorAll('.Selector__Item-Button--Departure-Prev')
 const departureNextButton = document.querySelectorAll('.Selector__Item-Button--Departure-Next')
 const returnSelector = document.getElementById('return-selector')
+const returnInsideSelector = document.getElementById('return-inside-selector')
 const returnItemsDate = document.querySelectorAll('.Selector__Item-Return')
 const returnPrevButton = document.querySelectorAll('.Selector__Item-Button--Return-Prev')
 const returnNextButton = document.querySelectorAll('.Selector__Item-Button--Return-Next')
 
-const restartButton = document.getElementById('restart-button')
-const subtmitButton = document.getElementById('submit-button')
+const calendar = document.getElementById('calendar')
+const restartButton = document.querySelectorAll('#restart-button')
+const submitButton = document.getElementById('submit-button')
 
 const monthSlider = document.getElementById('month-slider')
 const monthsContainer = document.getElementById('months-container')
 const prevMonthButton = document.getElementById('prev-month')
 const nextMonthButton = document.getElementById('next-month')
 
-const typeSelector = document.getElementById('type-selector')
-const typeSelectorOptions = document.getElementById('type-options')
-const typeDepartureAndReturn = document.getElementById('type-departure-and-return')
-const typeDepartureOnly = document.getElementById('type-departure-only')
+const typeSelector = document.querySelectorAll('#type-selector')
+const typeSelectorOptions = document.querySelectorAll('#type-options')
+const typeDepartureAndReturn = document.querySelectorAll('#type-departure-and-return')
+const typeDepartureOnly = document.querySelectorAll('#type-departure-only')
 
 // Constants
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const types = ['departure-and-return', 'departure-only']
+
+// Current date data
 const currentDate = new Date()
+currentDate.setHours(0, 0, 0, 0)
 const currentMonth = currentDate.getMonth()
 const currentYear = currentDate.getFullYear()
+
+// Last available day
+const lastDayOfCalendar = new Date()
+lastDayOfCalendar.setMonth(lastDayOfCalendar.getMonth() + 12)
+lastDayOfCalendar.setDate(lastDayOfCalendar.getDate() - 1)
+lastDayOfCalendar.setHours(0, 0, 0, 0)
 
 // Variables
 let typeSelected = 'departure-and-return'
@@ -46,12 +58,6 @@ const renderCalendar = () => {
 
     // Obtener el número de días en el mes
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const lastDayOfCalendar = new Date()
-    lastDayOfCalendar.setMonth(lastDayOfCalendar.getMonth() + 12)
-    lastDayOfCalendar.setDate(lastDayOfCalendar.getDate() - 1)
-    lastDayOfCalendar.setHours(0, 0, 0, 0)
-    console.log(lastDayOfCalendar)
 
     // Crear las celdas para cada día del mes
     const monthDays = []
@@ -138,9 +144,9 @@ const renderMonth = ({ month, year, days }) => {
         const month = day.closest('.Month')
         const monthName = month.querySelector('.Month__Name').textContent
         const dayNumber = day.textContent
-  
+
         const date = new Date(`${monthName} ${dayNumber}, ${currentYear}`)
-  
+
         if (typeSelected === 'departure-and-return') {
           if (!departureDate) {
             departureDate = date
@@ -165,7 +171,8 @@ const renderMonth = ({ month, year, days }) => {
           departureDate = date
           target.classList.add(dayStatus['departure-no-range'])
         }
-  
+
+        setSubmitStatus()
         setDateOnSelector()
         renderCalendar()
       })
@@ -178,41 +185,10 @@ const renderMonth = ({ month, year, days }) => {
   if(Array.from(monthsContainer.children).length == 13) {
     monthsContainer.innerHTML = ''
     monthsContainer.appendChild(monthContainer)
-    console.log(monthContainer)
   } else {
     monthsContainer.appendChild(monthContainer)
   }
 
-}
-
-const setDateOnSelector = () => {
-  if (departureDate) {
-    departureItemsDate.forEach(selector => {
-      selector.innerHTML = departureDate.toLocaleDateString(navigator.language, {
-        weekday: "short",
-        day: '2-digit',
-        month: 'short'
-      })
-    })
-  } else {
-    departureItemsDate.forEach(selector => {
-      selector.innerHTML = 'Departure'
-    })
-  }
-
-  if (returnDate) {
-    returnItemsDate.forEach(selector => {
-      selector.innerHTML = returnDate.toLocaleDateString(navigator.language, {
-        weekday: "short",
-        day: '2-digit',
-        month: 'short'
-      })
-    })
-  } else {
-    returnItemsDate.forEach(selector => {
-      selector.innerHTML = 'Return'
-    })
-  }
 }
 
 const setSlider = () => {
@@ -274,55 +250,118 @@ const setSlider = () => {
 
 const setTypeSelector = () => {
   const selectorIcon = document.querySelector('.Calendar__Selector-Icon')
-  const checkIcon = document.querySelector('.Calendar__Selector-Option-Icon')
+  const optionOneIcons = document.querySelectorAll('.Calendar__Selector-Option-Icon-One')
+  const optionTwoIcons = document.querySelectorAll('.Calendar__Selector-Option-Icon-Two')
 
   const resetCalendarBySelector = () => {
-    typeSelector.appendChild(selectorIcon)
-    typeSelectorOptions.classList.remove('Calendar__Selector-Options-Active')
+    typeSelector.forEach(selector => {
+      selector.appendChild(selectorIcon)
+    })
+    typeSelectorOptions.forEach(container => {
+      container.classList.remove('Calendar__Selector-Options-Active')
+    })
     departureDate = null
     returnDate = null
+    setDateOnSelector()
     renderCalendar()
   }
 
-  typeSelector.addEventListener('click', () => {
-    typeSelectorOptions.classList.toggle('Calendar__Selector-Options-Active')
-  })
-
-  typeDepartureAndReturn.addEventListener('click', () => {
-    // Change type and show check icon
-    typeSelected = 'departure-and-return'
-    typeSelector.textContent = `Round trip`
-    typeDepartureAndReturn.appendChild(checkIcon)
-
-    // Show return date selector
-    selector.forEach(selector => {
-      const divisor = selector.querySelector('.Selector__Divisor')
-      divisor.style.display =  'block'
-      const returnDate = selector.querySelectorAll('.Selector__Item')
-      returnDate[1].style.display = 'flex'
+  typeSelector.forEach(selector => {
+    selector.addEventListener('click', () => {
+      typeSelectorOptions.forEach(container => {
+        container.classList.toggle('Calendar__Selector-Options-Active')
+      })
     })
-
-    // Reset calendar
-    resetCalendarBySelector()
   })
 
-  typeDepartureOnly.addEventListener('click', () => {
-    // Change type and show check icon
-    typeSelected = 'departure-only'
-    typeSelector.textContent = `One way`
-    typeDepartureOnly.appendChild(checkIcon)
+  typeDepartureAndReturn.forEach(option => {
+    option.addEventListener('click', () => {
+      // Change type and show check icon
+      typeSelected = 'departure-and-return'
+      typeSelector.forEach(selector => {
+        selector.textContent = `Round trip`
+      })
+      typeDepartureAndReturn.forEach((_, index) => {
+        optionOneIcons[index].style.display = 'block'
+        optionTwoIcons[index].style.display = 'none'
+      })
 
-    // Hide return date selector
-    selector.forEach(selector => {
-      const divisor = selector.querySelector('.Selector__Divisor')
-      divisor.style.display =  'none'
-      const returnDate = selector.querySelectorAll('.Selector__Item')
-      returnDate[1].style.display = 'none'
+      // Show return date selector
+      selector.forEach(selector => {
+        const divisor = selector.querySelector('.Selector__Divisor')
+        divisor.style.display =  'block'
+        const returnDate = selector.querySelectorAll('.Selector__Item')
+        returnDate[1].style.display = 'flex'
+      })
+
+      // Reset calendar
+      resetCalendarBySelector()
     })
-
-    // Reset calendar
-    resetCalendarBySelector()
   })
+
+  typeDepartureOnly.forEach(option => {
+    option.addEventListener('click', () => {
+      // Change type and show check icon
+      typeSelected = 'departure-only'
+      typeSelector.forEach(selector => {
+        selector.textContent = `One way`
+      })
+      typeDepartureOnly.forEach((_, index) => {
+        optionOneIcons[index].style.display = 'none'
+        optionTwoIcons[index].style.display = 'block'
+      })
+
+      // Hide return date selector
+      selector.forEach(selector => {
+        const divisor = selector.querySelector('.Selector__Divisor')
+        divisor.style.display =  'none'
+        const returnDate = selector.querySelectorAll('.Selector__Item')
+        returnDate[1].style.display = 'none'
+      })
+
+      // Reset calendar
+      resetCalendarBySelector()
+    })
+  })
+}
+
+const setDateOnSelector = () => {
+  if (departureDate) {
+    departureItemsDate.forEach(selector => {
+      selector.innerHTML = departureDate.toLocaleDateString(navigator.language, {
+        weekday: "short",
+        day: '2-digit',
+        month: 'short'
+      })
+    })
+  } else {
+    departureItemsDate.forEach(selector => {
+      selector.innerHTML = 'Departure'
+    })
+  }
+
+  if (returnDate) {
+    returnItemsDate.forEach(selector => {
+      selector.innerHTML = returnDate.toLocaleDateString(navigator.language, {
+        weekday: "short",
+        day: '2-digit',
+        month: 'short'
+      })
+    })
+  } else {
+    returnItemsDate.forEach(selector => {
+      selector.innerHTML = 'Return'
+    })
+  }
+}
+
+const openCalendar = () => {
+  calendar.style.display = 'flex'
+  calendar.focus()
+}
+
+const closeCalendar = () => {
+  calendar.style.display = 'none'
 }
 
 const resetCalendar = () => {
@@ -338,9 +377,6 @@ const resetCalendar = () => {
 }
 
 const prevDay = (selector) => {
-  const currentDate = new Date()
-  currentDate.setHours(0, 0, 0, 0)
-
   if(selector === 'departure' && departureDate) {
     const newDate = new Date(departureDate)
     newDate.setDate(newDate.getDate() - 1)
@@ -358,7 +394,6 @@ const prevDay = (selector) => {
 
     if(newDateTime >= currentDate.getTime() && newDateTime > departureDate.getTime()) {
       returnDate = newDate
-      console.log(returnDate)
       renderCalendar()
     }
   }
@@ -366,14 +401,6 @@ const prevDay = (selector) => {
 }
 
 const nextDay = (selector) => {
-  const currentDate = new Date()
-  currentDate.setHours(0, 0, 0, 0)
-  // Get last day of the calendar
-  const lastDayOfCalendar = new Date()
-  lastDayOfCalendar.setMonth(lastDayOfCalendar.getMonth() + 12)
-  lastDayOfCalendar.setDate(lastDayOfCalendar.getDate() - 1)
-  lastDayOfCalendar.setHours(0, 0, 0, 0)
-
   if(selector === 'departure' && departureDate) {
     const newDate = new Date(departureDate)
     newDate.setDate(newDate.getDate() + 1)
@@ -399,15 +426,29 @@ const nextDay = (selector) => {
       returnDate = newDate
       renderCalendar()
     }
-
-
-    // if(newDateTime >= currentDate.getTime() && newDateTime > departureDate.getTime()) {
-    //   returnDate = newDate
-    //   console.log(returnDate)
-    //   renderCalendar()
-    // }
   }
   setDateOnSelector()
+}
+
+const setSubmitStatus = () => {
+  if(typeSelected === 'departure-and-return' && departureDate && returnDate) {
+    submitButton.classList.add('Calendar__Submit--Active')
+  } else if(typeSelected === 'departure-only' && departureDate) {
+    submitButton.classList.add('Calendar__Submit--Active')
+  } else {
+    submitButton.classList.remove('Calendar__Submit--Active')
+  }
+}
+
+const submitCalendar = () => {
+  if(typeSelected === 'departure-and-return' && departureDate && returnDate) {
+    console.log('Departure: ', departureDate)
+    console.log('Return: ', returnDate)
+  } else if(typeSelected === 'departure-only' && departureDate) {
+    console.log('Departure: ', departureDate)
+  }
+
+  closeCalendar()
 }
 
 const initCalendar = () => {
@@ -416,7 +457,17 @@ const initCalendar = () => {
   setTypeSelector()
 }
 
-restartButton.addEventListener('click', resetCalendar)
+
+// Open calendar
+departureSelector.addEventListener('click', openCalendar)
+returnSelector.addEventListener('click', openCalendar)
+// Close calendar
+// calendar.addEventListener('blur', (e) => {
+//   const needCloseCalendar = calendar.contains(e.relatedTarget) ? false : true
+
+//   if(needCloseCalendar) closeCalendar()
+//   else calendar.focus()
+// })
 departureNextButton.forEach(button => {
   button.addEventListener('click', () => nextDay('departure'))
 })
@@ -429,5 +480,10 @@ departurePrevButton.forEach(button => {
 returnPrevButton.forEach(button => {
   button.addEventListener('click', () => prevDay('return'))
 })
+
+restartButton.forEach(button => {
+  button.addEventListener('click', resetCalendar)
+})
+submitButton.addEventListener('click', submitCalendar)
 
 initCalendar()

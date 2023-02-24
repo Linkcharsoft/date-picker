@@ -21,6 +21,13 @@ button {
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 }
 
+.Container {
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  position: relative;
+}
+
 .Selector {
   width: -moz-fit-content;
   width: fit-content;
@@ -90,14 +97,51 @@ button {
 }
 
 .Calendar {
-  width: 100%;
-  max-width: 768px;
+  width: 736px;
   border-radius: 4px;
   background: #35373a;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  flex-direction: column;
 }
 .Calendar__Header {
   border-bottom: 1px solid #9aa0a6;
   padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.Calendar__Header-Mobile {
+  width: 100%;
+  height: 144px;
+  border-bottom: 1px solid #9aa0a6;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 8px;
+  display: none;
+}
+.Calendar__Header-Mobile__Close {
+  width: 46px;
+  height: 46px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.Calendar__Header-Mobile__Close:hover {
+  background: #35373a;
+}
+.Calendar__Header-Mobile__Close-Icon {
+  fill: #9aa0a6;
+}
+.Calendar__Header-Mobile__Content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.Calendar__Header-Mobile__Buttons {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -164,6 +208,9 @@ button {
   left: 16px;
   fill: #e8eaed;
 }
+.Calendar__Selector-Option-Icon-Two {
+  display: none;
+}
 .Calendar__Buttons {
   display: flex;
   align-items: center;
@@ -213,21 +260,33 @@ button {
   right: -16px;
 }
 .Calendar__Footer {
+  height: 64px;
   border-top: 1px solid #9aa0a6;
   padding: 16px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.Calendar__Save-Button {
+.Calendar__Submit, .Calendar__Submit--Active {
   width: -moz-fit-content;
   width: fit-content;
   height: 32px;
   border-radius: 16px;
   padding: 0 24px;
+  color: #e8eaed;
+  background: #202124;
+  opacity: 0.5;
+  font-weight: 500;
+  cursor: not-allowed;
+}
+.Calendar__Submit--Active {
   background: #8ab4f8;
   color: #202124;
-  font-weight: 500;
+  cursor: pointer;
+  opacity: 1;
+}
+.Calendar__Submit--Active:hover {
+  opacity: 0.8;
 }
 
 .Months__Container {
@@ -268,11 +327,12 @@ button {
 .Month__Weekdays {
   width: 100%;
   height: 20px;
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
 }
 .Month__Weekday {
-  width: 14.2857142857%;
+  width: 100%;
   max-width: 40px;
   height: 100%;
   display: flex;
@@ -282,12 +342,12 @@ button {
 }
 .Month__Days {
   width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
 }
 .Month__Day, .Month__Day--Range, .Month__Day--Return, .Month__Day--Departure, .Month__Day--Departure-NoRange, .Month__Day--Disabled, .Month__Day--Blank {
-  width: 14.2857142857%;
+  width: 100%;
   max-width: 52px;
   height: 52px;
   display: flex;
@@ -397,49 +457,94 @@ button {
   content: unset;
 }
 
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #eee;
-}
-
-.weekdays {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f0f0f0;
-}
-.weekdays div {
-  width: 14.2857142857%;
-  text-align: center;
-}
-
-.week {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-}
-.week div {
-  width: 14.2857142857%;
-  text-align: center;
-}
-.week div.day {
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.week div.day:hover {
-  background-color: #f0f0f0;
-}
-.week div.day.today {
-  background-color: #f0f0f0;
-}
-.week div.day.selected {
-  background-color: #ccc;
+@media (max-width: 768px) {
+  .Container {
+    position: static;
+  }
+  .Calendar {
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    background: #202124;
+    position: fixed;
+    top: 0;
+  }
+  .Calendar__Header {
+    display: none;
+  }
+  .Calendar__Header-Mobile {
+    display: flex;
+  }
+  .Calendar__Selector {
+    background: #202124;
+  }
+  .Calendar__Months-Container {
+    height: 100%;
+    position: relative;
+    overflow: hidden scroll;
+  }
+  .Calendar__Months-Container::-webkit-scrollbar {
+    width: 14px;
+  }
+  .Calendar__Months-Container::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-clip: content-box;
+    background-color: #35373a;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+  .Calendar__Months-Container::-webkit-scrollbar-thumb:hover {
+    background-color: #9aa0a6;
+    cursor: pointer;
+  }
+  .Calendar__Months-Container::-webkit-scrollbar-track {
+    background-color: #202124;
+    border-left: 1px solid #35373a;
+  }
+  .Calendar__Month-Button, .Calendar__Month-Button--Prev, .Calendar__Month-Button--Next {
+    display: none;
+  }
+  .Calendar .Selector {
+    width: 100%;
+    background: #202124;
+  }
+  .Calendar .Selector__Icon {
+    display: none;
+  }
+  .Calendar .Selector__Item {
+    width: 100%;
+  }
+  .Calendar .Selector__Item-Data {
+    width: 100%;
+    text-align: center;
+  }
+  .Calendar .Selector__Item-Button, .Calendar .Selector__Item-Button--Disabled {
+    display: none;
+  }
+  .Months__Container {
+    height: -moz-fit-content;
+    height: fit-content;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .Month {
+    width: 100%;
+    height: -moz-fit-content;
+    height: fit-content;
+  }
+  .Month__Name {
+    text-transform: capitalize;
+  }
+  .Month__Days {
+    row-gap: 6px;
+  }
+  .Month__Day, .Month__Day--Blank, .Month__Day--Disabled, .Month__Day--Departure, .Month__Day--Departure-NoRange, .Month__Day--Return, .Month__Day--Range {
+    max-width: none;
+  }
+  .Month__Day::after, .Month__Day--Blank::after, .Month__Day--Disabled::after, .Month__Day--Departure::after, .Month__Day--Departure-NoRange::after, .Month__Day--Return::after, .Month__Day--Range::after {
+    left: calc(50% - 26px);
+  }
 }

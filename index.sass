@@ -29,6 +29,11 @@ button
   cursor: pointer
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease
 
+.Container
+  width: fit-content
+  max-width: 100%
+  position: relative
+
 .Selector
   width: fit-content
   max-width: 100%
@@ -85,16 +90,47 @@ button
       color: $text-disabled
 
 .Calendar
-  width: 100%
-  max-width: 768px
+  width: calc(768px - 32px)
   border-radius: 4px
   background: $background
+  position: absolute
+  top: 100%
+  left: 0
+  display: none
+  flex-direction: column
   &__Header
     border-bottom: 1px solid $detail
     padding: 16px
     display: flex
     justify-content: space-between
     align-items: center
+  &__Header-Mobile
+    width: 100%
+    height: 144px
+    border-bottom: 1px solid $detail
+    padding: 16px
+    align-items: flex-start
+    gap: 8px
+    display: none
+    &__Close
+      width: 46px
+      height: 46px
+      border-radius: 4px
+      cursor: pointer
+      &:hover
+        background: $background
+      &-Icon
+        fill: $detail
+    &__Content
+      width: 100%
+      display: flex
+      flex-direction: column
+      gap: 10px
+    &__Buttons
+      width: 100%
+      display: flex
+      justify-content: space-between
+      align-items: center
   &__Selector-Container
     position: relative
   &__Selector
@@ -146,6 +182,8 @@ button
         position: absolute
         left: 16px
         fill: $text
+        &-Two
+          display: none
   &__Buttons
     display: flex
     align-items: center
@@ -188,19 +226,30 @@ button
       @extend .Calendar__Month-Button
       right: -16px
   &__Footer
+    height: 64px
     border-top: 1px solid $detail
     padding: 16px
     display: flex
     justify-content: flex-end
     align-items: center
-  &__Save-Button
+  &__Submit
     width: fit-content
     height: 32px
     border-radius: 16px
     padding: 0 24px
-    background: $primary
-    color: $text-inverted
+    color: $text
+    background: $background-alt
+    opacity: 0.5
     font-weight: 500
+    cursor: not-allowed
+    &--Active
+      @extend .Calendar__Submit
+      background: $primary
+      color: $text-inverted
+      cursor: pointer
+      opacity: 1
+      &:hover
+        opacity: 0.8
 
 .Months__Container
   width: 100%
@@ -236,10 +285,11 @@ button
   &__Weekdays
     width: 100%
     height: 20px
-    display: flex
-    justify-content: space-evenly
+    display: grid
+    grid-template-columns: repeat(7, 1fr)
+    justify-items: center
   &__Weekday
-    width: calc(100% / 7)
+    width: 100%
     max-width: 40px
     height: 100%
     display: flex
@@ -248,11 +298,11 @@ button
     font-weight: 500
   &__Days
     width: 100%
-    display: flex
-    justify-content: space-evenly
-    flex-wrap: wrap
+    display: grid
+    grid-template-columns: repeat(7, 1fr)
+    justify-items: center
   &__Day
-    width: calc(100% / 7)
+    width: 100%
     max-width: 52px
     height: 52px
     display: flex
@@ -357,41 +407,69 @@ button
       &::after
         content: unset
 
-
-.calendar-header
-  display: flex
-  justify-content: space-between
-  align-items: center
-  padding: 10px
-  background-color: #eee
-
-.weekdays
-  display: flex
-  justify-content: space-between
-  align-items: center
-  padding: 10px
-  background-color: #f0f0f0
-  div
-    width: calc(100% / 7)
-    text-align: center
-
-.week
-  display: flex
-  justify-content: space-between
-  align-items: center
-  padding: 10px
-  border-top: 1px solid #ccc
-  div
-    width: calc(100% / 7)
-    text-align: center
-    &.day
-      height: 50px
+@media (max-width: 768px)
+  .Container
+    position: static
+  .Calendar
+    width: 100%
+    height: 100vh
+    max-height: 100vh
+    border-radius: 0
+    background: $background-alt
+    position: fixed
+    top: 0
+    &__Header
+      display: none
+    &__Header-Mobile
       display: flex
-      justify-content: center
-      align-items: center
-      &:hover
-        background-color: #f0f0f0
-      &.today
-        background-color: #f0f0f0
-      &.selected
-        background-color: #ccc
+    &__Selector
+      background: $background-alt
+    &__Months-Container
+      height: 100%
+      position: relative
+      overflow: hidden scroll
+      &::-webkit-scrollbar
+        width: 14px
+        &-thumb
+          border: 2px solid transparent
+          border-radius: 10px
+          background-clip: content-box
+          background-color: $background
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, .5)
+          cursor: pointer
+          &:hover
+            background-color: $detail
+            cursor: pointer
+        &-track
+          background-color: $background-alt
+          border-left: 1px solid $background
+    &__Month-Button
+      display: none
+    .Selector
+      width: 100%
+      background: $background-alt
+      &__Icon
+        display: none
+      &__Item
+        width: 100%
+        &-Data
+          width: 100%
+          text-align: center
+        &-Button
+          display: none
+  .Months__Container
+    height: fit-content
+    flex-direction: column
+    justify-content: flex-start
+    align-items: center
+  .Month
+    width: 100%
+    height: fit-content
+    &__Name
+      text-transform: capitalize
+    &__Days
+      row-gap: 6px
+    &__Day
+      max-width: none
+      &::after
+        left: calc( 50% - 26px )
