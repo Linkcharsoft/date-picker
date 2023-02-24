@@ -13,6 +13,7 @@ const returnNextButton = document.querySelectorAll('.Selector__Item-Button--Retu
 const calendar = document.getElementById('calendar')
 const restartButton = document.querySelectorAll('#restart-button')
 const submitButton = document.getElementById('submit-button')
+const closeMobileButton = document.getElementById('close-mobile-button')
 
 const monthSlider = document.getElementById('month-slider')
 const monthsContainer = document.getElementById('months-container')
@@ -468,12 +469,17 @@ const initCalendar = () => {
 departureSelector.addEventListener('click', openCalendar)
 returnSelector.addEventListener('click', openCalendar)
 // Close calendar
-// calendar.addEventListener('blur', (e) => {
-//   const needCloseCalendar = calendar.contains(e.relatedTarget) ? false : true
+calendar.addEventListener('blur', (e) => {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches
+  const needCloseCalendar = calendar.contains(e.relatedTarget) ? false : true
 
-//   if(needCloseCalendar) closeCalendar()
-//   else calendar.focus()
-// })
+  if(!isMobile) {
+    if(needCloseCalendar) closeCalendar()
+    else calendar.focus()
+  }
+})
+closeMobileButton.addEventListener('click', closeCalendar)
+
 departureNextButton.forEach(button => {
   button.addEventListener('click', () => nextDay('departure'))
 })
