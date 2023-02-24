@@ -100,6 +100,8 @@ const renderCalendar = () => {
       days: monthDays,
     })
   }
+
+  setSlider()
 }
 
 const renderMonth = ({ month, year, days }) => {
@@ -193,7 +195,8 @@ const renderMonth = ({ month, year, days }) => {
 
 const setSlider = () => {
   // Set slider
-  const monthItemWidth = document.querySelector('.Month').offsetWidth;
+  // const monthItemWidth = document.querySelector('.Month').offsetWidth;
+  const monthItemWidth = 368;
   const maxTranslateX = monthItemWidth * 11;
   let currentTranslateX = 0;
 
@@ -218,6 +221,7 @@ const setSlider = () => {
     if (currentTranslateX < 0) {
       currentTranslateX = 0;
     }
+    console.log(currentTranslateX)
     monthsContainer.scroll({
       top: 0,
       left: currentTranslateX,
@@ -232,6 +236,7 @@ const setSlider = () => {
     if (currentTranslateX > maxTranslateX) {
       currentTranslateX = maxTranslateX;
     }
+    console.log(currentTranslateX)
     monthsContainer.scroll({
       top: 0,
       left: currentTranslateX,
@@ -249,13 +254,13 @@ const setSlider = () => {
 }
 
 const setTypeSelector = () => {
-  const selectorIcon = document.querySelector('.Calendar__Selector-Icon')
+  const selectorIcons = document.querySelectorAll('.Calendar__Selector-Icon')
   const optionOneIcons = document.querySelectorAll('.Calendar__Selector-Option-Icon-One')
   const optionTwoIcons = document.querySelectorAll('.Calendar__Selector-Option-Icon-Two')
 
   const resetCalendarBySelector = () => {
-    typeSelector.forEach(selector => {
-      selector.appendChild(selectorIcon)
+    typeSelector.forEach((selector, index) => {
+      selector.appendChild(selectorIcons[index])
     })
     typeSelectorOptions.forEach(container => {
       container.classList.remove('Calendar__Selector-Options-Active')
@@ -263,6 +268,7 @@ const setTypeSelector = () => {
     departureDate = null
     returnDate = null
     setDateOnSelector()
+    setSubmitStatus()
     renderCalendar()
   }
 
@@ -373,6 +379,7 @@ const resetCalendar = () => {
   returnItemsDate.forEach(selector => {
     selector.innerHTML = 'Return'
   })
+  setSubmitStatus()
   renderCalendar()
 }
 
@@ -453,7 +460,6 @@ const submitCalendar = () => {
 
 const initCalendar = () => {
   renderCalendar()
-  setSlider()
   setTypeSelector()
 }
 
