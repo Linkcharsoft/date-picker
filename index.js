@@ -44,6 +44,7 @@ lastDayOfCalendar.setHours(0, 0, 0, 0)
 
 // Variables
 let typeSelected = 'departure-and-return'
+let selectedDateToChange = 'departure'
 let departureDate = null
 let returnDate = null
 
@@ -82,13 +83,23 @@ const renderCalendar = () => {
         // Crear celdas con los días del mes
         day.number = dayNumber;
 
+        // if(departureDate && returnDate && dayTime > departureDate.getTime() && dayTime < returnDate.getTime()) {
+        //   day.status = 'range'
+        // } else if (departureDate && dayNumber === departureDate.getDate() && month === departureDate.getMonth() && year === departureDate.getFullYear()) {
+        //   if(returnDate) day.status = 'departure'
+        //   else day.status = 'departure-no-range'
+        // } else if (returnDate && dayNumber === returnDate.getDate() && month === returnDate.getMonth() && year === returnDate.getFullYear()) {
+        //   day.status = 'return'
+        // }
         if(departureDate && returnDate && dayTime > departureDate.getTime() && dayTime < returnDate.getTime()) {
           day.status = 'range'
         } else if (departureDate && dayNumber === departureDate.getDate() && month === departureDate.getMonth() && year === departureDate.getFullYear()) {
-          if(returnDate) day.status = 'departure'
+          if(selectedDateToChange === 'departure' && returnDate) day.status = 'current-selected'
+          else if(selectedDateToChange === 'return' && returnDate) day.status = 'other-selected'
           else day.status = 'departure-no-range'
         } else if (returnDate && dayNumber === returnDate.getDate() && month === returnDate.getMonth() && year === returnDate.getFullYear()) {
-          day.status = 'return'
+          if(selectedDateToChange === 'return' && departureDate) day.status = 'current-selected'
+          else if(selectedDateToChange === 'departure' && departureDate) day.status = 'other-selected'
         }
       }
 
@@ -109,9 +120,9 @@ const renderMonth = ({ month, year, days }) => {
     blank: 'Month__Day--Blank',
     disabled: 'Month__Day--Disabled',
     range: 'Month__Day--Range',
-    departure: 'Month__Day--Departure',
-    'departure-no-range': 'Month__Day--Departure-NoRange',
-    return: 'Month__Day--Return'
+    'current-selected': selectedDateToChange === 'departure' ? 'Month__Day--Departure-Current-Selected' : 'Month__Day--Return-Current-Selected',
+    'departure-no-range': 'Month__Day--Current-Selected-NoRange',
+    'other-selected': selectedDateToChange === 'return' ? 'Month__Day--Departure-Other-Selected' : 'Month__Day--Return-Other-Selected',
   }
 
   const monthContainer = document.createElement('section')
@@ -149,24 +160,27 @@ const renderMonth = ({ month, year, days }) => {
         const date = new Date(`${monthName} ${dayNumber}, ${currentYear}`)
 
         if (typeSelected === 'departure-and-return') {
-          if (!departureDate) {
-            departureDate = date
-            target.classList.add(dayStatus['departure-no-range'])
-            returnDate = null
-          } else if (!returnDate) {
-            // Check if return date is after departure date
-            if (date.getTime() > departureDate.getTime()) {
+          if(selectedDateToChange == 'departure') {
+            if(date.getTime() >= currentDate.getTime()) {
+              if(!departureDate || (returnDate && date.getTime() > returnDate?.getTime())) {
+                returnDate = null
+              }
+              departureDate = date
+              selectedDateToChange = 'return'
+              target.classList.add(dayStatus['departure-no-range'])
+            }
+          }
+
+          if(selectedDateToChange == 'return') {
+            if(date.getTime() > departureDate.getTime()) {
               returnDate = date
+              selectedDateToChange = 'departure'
               target.classList.remove(dayStatus['departure-no-range'])
             } else {
               departureDate = date
+              selectedDateToChange = 'return'
               target.classList.add(dayStatus['departure-no-range'])
-              returnDate = null
             }
-          } else {
-            departureDate = date
-            target.classList.add(dayStatus['departure-no-range'])
-            returnDate = null
           }
         } else {
           departureDate = date
@@ -328,6 +342,31 @@ const setTypeSelector = () => {
   })
 }
 
+const setFocusOnSelector = () => {
+  if(selectedDateToChange == 'departure') {
+    departureInsideSelector.classList.add('Selector__Item-Data--Focus')
+    returnInsideSelector.classList.remove('Selector__Item-Data--Focus')
+  } else {
+    departureInsideSelector.classList.remove('Selector__Item-Data--Focus')
+    returnInsideSelector.classList.add('Selector__Item-Data--Focus')
+  }
+
+  renderCalendar()
+}
+
+const changeSelectedDate = (selector) => {
+  if (typeSelected === 'departure-and-return') {
+    if(selector == 'departure') {
+      selectedDateToChange = 'departure'
+    } else if(departureDate) {
+      selectedDateToChange = 'return'
+    }
+  } else {
+    selectedDateToChange = 'departure'
+  }
+  setFocusOnSelector()
+}
+
 const setDateOnSelector = () => {
   if (departureDate) {
     departureItemsDate.forEach(selector => {
@@ -356,11 +395,14 @@ const setDateOnSelector = () => {
       selector.innerHTML = 'Return'
     })
   }
+
+  setFocusOnSelector()
 }
 
 const openCalendar = () => {
   calendar.style.display = 'flex'
   calendar.focus()
+  setFocusOnSelector()
 }
 
 const closeCalendar = () => {
@@ -368,6 +410,7 @@ const closeCalendar = () => {
 }
 
 const resetCalendar = () => {
+  selectedDateToChange = 'departure'
   departureDate = null
   returnDate = null
   departureItemsDate.forEach(selector => {
@@ -377,6 +420,7 @@ const resetCalendar = () => {
     selector.innerHTML = 'Return'
   })
   setSubmitStatus()
+  setFocusOnSelector()
   renderCalendar()
 }
 
@@ -463,19 +507,29 @@ const initCalendar = () => {
 
 
 // Open calendar
-departureSelector.addEventListener('click', openCalendar)
-returnSelector.addEventListener('click', openCalendar)
-// Close calendar
-calendar.addEventListener('blur', (e) => {
-  const isMobile = window.matchMedia('(max-width: 768px)').matches
-  const needCloseCalendar = calendar.contains(e.relatedTarget) ? false : true
-
-  if(!isMobile) {
-    if(needCloseCalendar) closeCalendar()
-    else calendar.focus()
-  }
+departureSelector.addEventListener('click', () => {
+  openCalendar()
+  changeSelectedDate('departure')
 })
+returnSelector.addEventListener('click', () => {
+  openCalendar()
+  changeSelectedDate('return')
+})
+
+// Close calendar
+// calendar.addEventListener('blur', (e) => {
+//   const isMobile = window.matchMedia('(max-width: 768px)').matches
+//   const needCloseCalendar = calendar.contains(e.relatedTarget) ? false : true
+
+//   if(!isMobile) {
+//     if(needCloseCalendar) closeCalendar()
+//     else calendar.focus()
+//   }
+// })
 closeMobileButton.addEventListener('click', closeCalendar)
+
+departureInsideSelector.addEventListener('click', () => changeSelectedDate('departure'))
+returnInsideSelector.addEventListener('click', () => changeSelectedDate('return'))
 
 departureNextButton.forEach(button => {
   button.addEventListener('click', () => nextDay('departure'))

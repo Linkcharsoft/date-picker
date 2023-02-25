@@ -62,14 +62,34 @@ button {
   align-items: center;
   gap: 10px;
 }
-.Selector__Item-Data {
+.Selector__Item-Data, .Selector__Item-Data--Focus {
   width: 130px;
   padding-left: 8px;
   font-size: 16px;
   text-align: left;
+  position: relative;
 }
-.Selector__Item-Data:hover {
+.Selector__Item-Data:hover, .Selector__Item-Data--Focus:hover {
   color: #9aa0a6;
+}
+.Selector__Item-Data::after, .Selector__Item-Data--Focus::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  border-radius: 5px;
+  background: #8ab4f8;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  color: #8ab4f8;
+}
+.Selector__Item-Data--Focus {
+  color: #8ab4f8;
+}
+.Selector__Item-Data--Focus::after {
+  opacity: 1;
 }
 .Selector__Item-Buttons {
   height: 100%;
@@ -346,7 +366,7 @@ button {
   grid-template-columns: repeat(7, 1fr);
   justify-items: center;
 }
-.Month__Day, .Month__Day--Range, .Month__Day--Return, .Month__Day--Departure, .Month__Day--Departure-NoRange, .Month__Day--Disabled, .Month__Day--Blank {
+.Month__Day, .Month__Day--Range, .Month__Day--Other-Selected, .Month__Day--Return-Other-Selected, .Month__Day--Departure-Other-Selected, .Month__Day--Current-Selected, .Month__Day--Return-Current-Selected, .Month__Day--Departure-Current-Selected, .Month__Day--Current-Selected-NoRange, .Month__Day--Disabled, .Month__Day--Blank {
   width: 100%;
   max-width: 52px;
   height: 52px;
@@ -356,7 +376,7 @@ button {
   cursor: pointer;
   position: relative;
 }
-.Month__Day::after, .Month__Day--Range::after, .Month__Day--Return::after, .Month__Day--Departure::after, .Month__Day--Departure-NoRange::after, .Month__Day--Disabled::after, .Month__Day--Blank::after {
+.Month__Day::after, .Month__Day--Range::after, .Month__Day--Other-Selected::after, .Month__Day--Return-Other-Selected::after, .Month__Day--Departure-Other-Selected::after, .Month__Day--Current-Selected::after, .Month__Day--Return-Current-Selected::after, .Month__Day--Departure-Current-Selected::after, .Month__Day--Current-Selected-NoRange::after, .Month__Day--Disabled::after, .Month__Day--Blank::after {
   content: "";
   position: absolute;
   top: 0;
@@ -371,7 +391,7 @@ button {
   z-index: 2;
   opacity: 0;
 }
-.Month__Day:hover::after, .Month__Day--Range:hover::after, .Month__Day--Return:hover::after, .Month__Day--Departure:hover::after, .Month__Day--Departure-NoRange:hover::after, .Month__Day--Disabled:hover::after, .Month__Day--Blank:hover::after {
+.Month__Day:hover::after, .Month__Day--Range:hover::after, .Month__Day--Other-Selected:hover::after, .Month__Day--Return-Other-Selected:hover::after, .Month__Day--Departure-Other-Selected:hover::after, .Month__Day--Current-Selected:hover::after, .Month__Day--Return-Current-Selected:hover::after, .Month__Day--Departure-Current-Selected:hover::after, .Month__Day--Current-Selected-NoRange:hover::after, .Month__Day--Disabled:hover::after, .Month__Day--Blank:hover::after {
   opacity: 1;
 }
 .Month__Day--Blank {
@@ -388,15 +408,15 @@ button {
 .Month__Day--Disabled::after {
   content: none;
 }
-.Month__Day--Departure, .Month__Day--Departure-NoRange {
+.Month__Day--Current-Selected, .Month__Day--Return-Current-Selected, .Month__Day--Departure-Current-Selected, .Month__Day--Current-Selected-NoRange {
   color: #202124;
 }
-.Month__Day--Departure::after, .Month__Day--Departure-NoRange::after {
+.Month__Day--Current-Selected::after, .Month__Day--Return-Current-Selected::after, .Month__Day--Departure-Current-Selected::after, .Month__Day--Current-Selected-NoRange::after {
   content: attr(data-number);
   background: #8ab4f8;
   opacity: 1;
 }
-.Month__Day--Departure::before, .Month__Day--Departure-NoRange::before {
+.Month__Day--Current-Selected::before, .Month__Day--Return-Current-Selected::before, .Month__Day--Departure-Current-Selected::before, .Month__Day--Current-Selected-NoRange::before {
   content: attr(data-range);
   width: 50%;
   height: 100%;
@@ -408,20 +428,25 @@ button {
   align-items: center;
   position: absolute;
   top: 0;
-  left: 50%;
   opacity: 1;
   z-index: 1;
 }
-.Month__Day--Departure-NoRange::before {
+.Month__Day--Current-Selected-NoRange::before {
   content: none !important;
 }
-.Month__Day--Return::after {
+.Month__Day--Departure-Current-Selected::before {
+  left: 50%;
+}
+.Month__Day--Return-Current-Selected::before {
+  right: 50%;
+}
+.Month__Day--Other-Selected::after, .Month__Day--Return-Other-Selected::after, .Month__Day--Departure-Other-Selected::after {
   content: attr(data-number);
   border: 1px solid #9aa0a6;
   background: #35373a;
   opacity: 1;
 }
-.Month__Day--Return::before {
+.Month__Day--Other-Selected::before, .Month__Day--Return-Other-Selected::before, .Month__Day--Departure-Other-Selected::before {
   content: "";
   width: 50%;
   height: 100%;
@@ -436,6 +461,12 @@ button {
   right: 50%;
   opacity: 1;
   z-index: 1;
+}
+.Month__Day--Departure-Other-Selected::before {
+  left: 50%;
+}
+.Month__Day--Return-Other-Selected::before {
+  right: 50%;
 }
 .Month__Day--Range::before {
   content: attr(data-number);
@@ -516,7 +547,7 @@ button {
   .Calendar .Selector__Item {
     width: 100%;
   }
-  .Calendar .Selector__Item-Data {
+  .Calendar .Selector__Item-Data, .Calendar .Selector__Item-Data--Focus {
     width: 100%;
     text-align: center;
   }
@@ -541,10 +572,10 @@ button {
   .Month__Days {
     row-gap: 6px;
   }
-  .Month__Day, .Month__Day--Blank, .Month__Day--Disabled, .Month__Day--Departure, .Month__Day--Departure-NoRange, .Month__Day--Return, .Month__Day--Range {
+  .Month__Day, .Month__Day--Blank, .Month__Day--Disabled, .Month__Day--Current-Selected, .Month__Day--Current-Selected-NoRange, .Month__Day--Departure-Current-Selected, .Month__Day--Return-Current-Selected, .Month__Day--Other-Selected, .Month__Day--Departure-Other-Selected, .Month__Day--Return-Other-Selected, .Month__Day--Range {
     max-width: none;
   }
-  .Month__Day::after, .Month__Day--Blank::after, .Month__Day--Disabled::after, .Month__Day--Departure::after, .Month__Day--Departure-NoRange::after, .Month__Day--Return::after, .Month__Day--Range::after {
+  .Month__Day::after, .Month__Day--Blank::after, .Month__Day--Disabled::after, .Month__Day--Current-Selected::after, .Month__Day--Current-Selected-NoRange::after, .Month__Day--Departure-Current-Selected::after, .Month__Day--Return-Current-Selected::after, .Month__Day--Other-Selected::after, .Month__Day--Departure-Other-Selected::after, .Month__Day--Return-Other-Selected::after, .Month__Day--Range::after {
     left: calc(50% - 26px);
   }
 }
