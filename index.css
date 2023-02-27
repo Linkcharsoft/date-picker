@@ -136,10 +136,10 @@ button {
 }
 .Calendar__Header-Mobile {
   width: 100%;
-  height: 144px;
+  height: 88px;
   border-bottom: 1px solid #9aa0a6;
   padding: 16px;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   display: none;
 }
@@ -147,6 +147,9 @@ button {
   width: 46px;
   height: 46px;
   border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 .Calendar__Header-Mobile__Close:hover {
@@ -287,6 +290,9 @@ button {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+.Calendar__Footer #restart-button {
+  display: none;
 }
 .Calendar__Submit, .Calendar__Submit--Active {
   width: -moz-fit-content;
@@ -574,6 +580,15 @@ button {
   }
   .Calendar .Selector__Item-Button, .Calendar .Selector__Item-Button--Disabled {
     display: none;
+  }
+  .Calendar__Footer {
+    gap: 12px;
+  }
+  .Calendar__Footer #restart-button {
+    height: 32px;
+    border-radius: 16px;
+    padding: 0 24px;
+    display: flex;
   }
   .Months__Container {
     height: -moz-fit-content;
