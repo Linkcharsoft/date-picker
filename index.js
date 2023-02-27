@@ -1,11 +1,11 @@
 const selector = document.querySelectorAll('.Selector')
 const departureSelector = document.getElementById('departure-selector')
-const departureInsideSelector = document.getElementById('departure-inside-selector')
+const departureInsideSelectors = document.querySelectorAll('#departure-inside-selector')
 const departureItemsDate= document.querySelectorAll('.Selector__Item-Departure')
 const departurePrevButton = document.querySelectorAll('.Selector__Item-Button--Departure-Prev')
 const departureNextButton = document.querySelectorAll('.Selector__Item-Button--Departure-Next')
 const returnSelector = document.getElementById('return-selector')
-const returnInsideSelector = document.getElementById('return-inside-selector')
+const returnInsideSelectors = document.querySelectorAll('#return-inside-selector')
 const returnItemsDate = document.querySelectorAll('.Selector__Item-Return')
 const returnPrevButton = document.querySelectorAll('.Selector__Item-Button--Return-Prev')
 const returnNextButton = document.querySelectorAll('.Selector__Item-Button--Return-Next')
@@ -344,11 +344,19 @@ const setTypeSelector = () => {
 
 const setFocusOnSelector = () => {
   if(selectedDateToChange == 'departure') {
-    departureInsideSelector.classList.add('Selector__Item-Data--Focus')
-    returnInsideSelector.classList.remove('Selector__Item-Data--Focus')
+    departureInsideSelectors.forEach(selector => {
+      selector.classList.add('Selector__Item-Data--Focus')
+    })
+    returnInsideSelectors.forEach(selector => {
+      selector.classList.remove('Selector__Item-Data--Focus')
+    })
   } else {
-    departureInsideSelector.classList.remove('Selector__Item-Data--Focus')
-    returnInsideSelector.classList.add('Selector__Item-Data--Focus')
+    departureInsideSelectors.forEach(selector => {
+      selector.classList.remove('Selector__Item-Data--Focus')
+    })
+    returnInsideSelectors.forEach(selector => {
+      selector.classList.add('Selector__Item-Data--Focus')
+    })
   }
 
   renderCalendar()
@@ -517,19 +525,23 @@ returnSelector.addEventListener('click', () => {
 })
 
 // Close calendar
-// calendar.addEventListener('blur', (e) => {
-//   const isMobile = window.matchMedia('(max-width: 768px)').matches
-//   const needCloseCalendar = calendar.contains(e.relatedTarget) ? false : true
+calendar.addEventListener('blur', (e) => {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches
+  const needCloseCalendar = calendar.contains(e.relatedTarget) ? false : true
 
-//   if(!isMobile) {
-//     if(needCloseCalendar) closeCalendar()
-//     else calendar.focus()
-//   }
-// })
+  if(!isMobile) {
+    if(needCloseCalendar) closeCalendar()
+    else calendar.focus()
+  }
+})
 closeMobileButton.addEventListener('click', closeCalendar)
 
-departureInsideSelector.addEventListener('click', () => changeSelectedDate('departure'))
-returnInsideSelector.addEventListener('click', () => changeSelectedDate('return'))
+departureInsideSelectors.forEach(selector => {
+  selector.addEventListener('click', () => changeSelectedDate('departure'))
+})
+returnInsideSelectors.forEach(selector => {
+  selector.addEventListener('click', () => changeSelectedDate('return'))
+})
 
 departureNextButton.forEach(button => {
   button.addEventListener('click', () => nextDay('departure'))

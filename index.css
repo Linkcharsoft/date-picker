@@ -64,6 +64,7 @@ button {
 }
 .Selector__Item-Data, .Selector__Item-Data--Focus {
   width: 130px;
+  height: 100%;
   padding-left: 8px;
   font-size: 16px;
   text-align: left;
@@ -79,7 +80,7 @@ button {
   border-radius: 5px;
   background: #8ab4f8;
   position: absolute;
-  top: calc(100% + 5px);
+  bottom: 10px;
   left: 0;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -130,7 +131,7 @@ button {
   border-bottom: 1px solid #9aa0a6;
   padding: 16px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 .Calendar__Header-Mobile {
@@ -163,7 +164,7 @@ button {
 .Calendar__Header-Mobile__Buttons {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 .Calendar__Selector-Container {
@@ -492,6 +493,26 @@ button {
   .Container {
     position: static;
   }
+  .Selector {
+    width: 100%;
+    background: #202124;
+  }
+  .Selector__Item {
+    width: 100%;
+    justify-content: center;
+  }
+  .Selector__Item-Data, .Selector__Item-Data--Focus {
+    width: 120px;
+    padding: 0;
+    text-align: center;
+  }
+  .Selector__Item-Data::after, .Selector__Item-Data--Focus::after {
+    width: 90%;
+    left: 5%;
+  }
+  .Selector__Item-Button, .Selector__Item-Button--Disabled {
+    display: none;
+  }
   .Calendar {
     width: 100%;
     height: 100vh;
@@ -577,5 +598,10 @@ button {
   }
   .Month__Day::after, .Month__Day--Blank::after, .Month__Day--Disabled::after, .Month__Day--Current-Selected::after, .Month__Day--Current-Selected-NoRange::after, .Month__Day--Departure-Current-Selected::after, .Month__Day--Return-Current-Selected::after, .Month__Day--Other-Selected::after, .Month__Day--Departure-Other-Selected::after, .Month__Day--Return-Other-Selected::after, .Month__Day--Range::after {
     left: calc(50% - 26px);
+  }
+}
+@media (max-width: 375px) {
+  .Selector__Icon {
+    display: none;
   }
 }
