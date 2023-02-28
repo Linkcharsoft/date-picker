@@ -258,8 +258,9 @@ button {
   position: relative;
 }
 .Calendar__Month-Button, .Calendar__Month-Button--Next, .Calendar__Month-Button--Prev {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #9aa0a6;
   border-radius: 50%;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -267,7 +268,7 @@ button {
   align-items: center;
   color: #e8eaed;
   position: absolute;
-  top: calc(50% - 17px);
+  top: calc(50% - 20px);
   background: #35373a;
   z-index: 5;
 }
@@ -278,10 +279,10 @@ button {
   fill: #e8eaed;
 }
 .Calendar__Month-Button--Prev {
-  left: -16px;
+  left: -20px;
 }
 .Calendar__Month-Button--Next {
-  right: -16px;
+  right: -20px;
 }
 .Calendar__Footer {
   height: 64px;
@@ -349,7 +350,7 @@ button {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
-  text-transform: lowercase;
+  text-transform: capitalize;
 }
 .Month__Weekdays {
   width: 100%;
@@ -601,9 +602,6 @@ button {
     width: 100%;
     height: -moz-fit-content;
     height: fit-content;
-  }
-  .Month__Name {
-    text-transform: capitalize;
   }
   .Month__Days {
     row-gap: 6px;

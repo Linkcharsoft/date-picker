@@ -131,13 +131,13 @@ const renderMonth = ({ month, year, days }) => {
     <header class="Month__Header">
       <h6 class="Month__Name">${ month } ${year ? `- ${year}` : ''}</h6>
       <div class="Month__Weekdays">
-        <div class="Month__Weekday">L</div>
         <div class="Month__Weekday">M</div>
-        <div class="Month__Weekday">M</div>
-        <div class="Month__Weekday">J</div>
-        <div class="Month__Weekday">V</div>
+        <div class="Month__Weekday">T</div>
+        <div class="Month__Weekday">W</div>
+        <div class="Month__Weekday">T</div>
+        <div class="Month__Weekday">F</div>
         <div class="Month__Weekday">S</div>
-        <div class="Month__Weekday">D</div>
+        <div class="Month__Weekday">S</div>
       </div>
     </header>
   `
